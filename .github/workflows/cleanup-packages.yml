@@ -16,10 +16,7 @@ jobs:
       - name: Delete old package versions (keep latest 2 across entire organization)
         uses: smartsquaregmbh/delete-old-packages@v0.8.1
         with:
-          organization: your-org-name     # Replace with your exact organization name
+          user: davidsilwal                # Your GitHub username
           keep: 2                         # Keeps the 2 most recent versions per package
           type: container                 # Set to container for GitHub Packages (Docker images)
-          # names: |                      # Optional: List specific package names if you don't want ALL
-          #   package1
-          #   package2
           token: ${{ secrets.GITHUB_TOKEN }}
