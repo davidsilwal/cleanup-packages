@@ -18,7 +18,7 @@ jobs:
         with:
           organization: your-org-name     # Replace with your exact organization name
           keep: 2                         # Keeps the 2 most recent versions per package
-          # type: container               # Uncomment and set if you only want one type (e.g., container, npm, maven)
+          type: container                 # Set to container for GitHub Packages (Docker images)
           # names: |                      # Optional: List specific package names if you don't want ALL
           #   package1
           #   package2
