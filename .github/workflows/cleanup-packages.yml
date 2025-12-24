@@ -1,0 +1,25 @@
+name: Daily Organization Package Cleanup
+
+on:
+  schedule:
+    - cron: '0 3 * * *'  # Runs daily at 3:00 AM UTC (adjust time if needed)
+  workflow_dispatch:     # Allows manual trigger from GitHub UI
+
+permissions:
+  contents: read
+  packages: write  # Helps with token capabilities
+
+jobs:
+  cleanup-organization-packages:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete old package versions (keep latest 2 across entire organization)
+        uses: smartsquaregmbh/delete-old-packages@v0.8.1
+        with:
+          organization: your-org-name     # Replace with your exact organization name
+          keep: 2                         # Keeps the 2 most recent versions per package
+          # type: container               # Uncomment and set if you only want one type (e.g., container, npm, maven)
+          # names: |                      # Optional: List specific package names if you don't want ALL
+          #   package1
+          #   package2
+          token: ${{ secrets.GITHUB_TOKEN }}
