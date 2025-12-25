@@ -1,10 +1,9 @@
 name: Daily Organization Package Cleanup
 
 on:
-  push:
-    branches:
-      - main
-  workflow_dispatch:     # Allows manual trigger from GitHub UI
+  schedule:
+    - cron: '0 0 */3 * *'  # Runs every 3 days at midnight UTC
+  workflow_dispatch:       # Allows manual trigger from GitHub UI
 
 permissions:
   contents: read
