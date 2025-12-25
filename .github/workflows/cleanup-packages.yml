@@ -15,27 +15,27 @@ jobs:
   cleanup-organization-packages:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      
       - name: Delete old package versions for all packages
         uses: actions/github-script@v7
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.PAT_TOKEN }}
           script: |
             const owner = context.repo.owner;
             
-            // List all packages for authenticated user
-            const packagesResponse = await github.rest.packages.listPackagesForAuthenticatedUser({
-              package_type: 'container'
+            // List all packages for user
+            const packagesResponse = await github.rest.packages.listPackagesForUser({
+              package_type: 'container',
+              username: owner,
+              visibility: 'private'
             });
             
             for (const pkg of packagesResponse.data) {
               console.log(`Processing package: ${pkg.name}`);
               
-              const versionsResponse = await github.rest.packages.getAllPackageVersionsForPackageOwnedByAuthenticatedUser({
+              const versionsResponse = await github.rest.packages.getAllPackageVersionsForPackageOwnedByUser({
                 package_type: 'container',
-                package_name: pkg.name
+                package_name: pkg.name,
+                username: owner
               });
               
               const versions = versionsResponse.data.sort((a, b) => 
@@ -46,9 +46,10 @@ jobs:
               
               for (const version of versionsToDelete) {
                 console.log(`Deleting version ${version.id} of ${pkg.name}`);
-                await github.rest.packages.deletePackageVersionForAuthenticatedUser({
+                await github.rest.packages.deletePackageVersionForUser({
                   package_type: 'container',
                   package_name: pkg.name,
+                  username: owner,
                   package_version_id: version.id
                 });
               }
