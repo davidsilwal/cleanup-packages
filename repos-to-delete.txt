@@ -1,0 +1,12 @@
+# List repository names to delete (one per line)
+# Lines starting with # are treated as comments and ignored
+# Empty lines are also ignored
+
+helix
+axum
+efcore
+aspnetcore
+dotnetToolsDemo
+dotnet-tutorial
+aspnetcore-app-workshop
+CSharpPerformanceBoosters

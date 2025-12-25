@@ -1,0 +1,2 @@
+# Add .env to .gitignore to prevent committing your token
+.env
