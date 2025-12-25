@@ -24,18 +24,18 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const owner = context.repo.owner;
-            const packagesResponse = await github.rest.packages.listPackagesForUser({
-              package_type: 'container',
-              username: owner
+            
+            // List all packages for authenticated user
+            const packagesResponse = await github.rest.packages.listPackagesForAuthenticatedUser({
+              package_type: 'container'
             });
             
             for (const pkg of packagesResponse.data) {
               console.log(`Processing package: ${pkg.name}`);
               
-              const versionsResponse = await github.rest.packages.getAllPackageVersionsForPackageOwnedByUser({
+              const versionsResponse = await github.rest.packages.getAllPackageVersionsForPackageOwnedByAuthenticatedUser({
                 package_type: 'container',
-                package_name: pkg.name,
-                username: owner
+                package_name: pkg.name
               });
               
               const versions = versionsResponse.data.sort((a, b) => 
@@ -46,10 +46,9 @@ jobs:
               
               for (const version of versionsToDelete) {
                 console.log(`Deleting version ${version.id} of ${pkg.name}`);
-                await github.rest.packages.deletePackageVersionForUser({
+                await github.rest.packages.deletePackageVersionForAuthenticatedUser({
                   package_type: 'container',
                   package_name: pkg.name,
-                  username: owner,
                   package_version_id: version.id
                 });
               }
